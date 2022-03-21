@@ -1,27 +1,18 @@
-use actix_web::{web, App, HttpRequest, HttpResponse, HttpServer, Responder};
-
-async fn greet(req: HttpRequest) -> impl Responder {
-    let name = req.match_info().get("name").unwrap_or("World");
-    format!("Hello {}!", name)
-}
-
-// ヘルスチェック用のHandler関数
-async fn health_check() -> impl Responder {
-    HttpResponse::Ok()
-}
+use api::configuration::get_configuration;
+use api::startup::run;
+use sqlx::PgPool;
+use std::net::TcpListener;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
-        App::new()
-            .route("/health_check", web::get().to(health_check))
-            .service(
-                web::scope("/api")
-                    .route("", web::get().to(greet))
-                    .route("/{name}", web::get().to(greet)),
-            )
-    })
-    .bind("127.0.0.1:8000")?
-    .run()
-    .await
+    let configuration = get_configuration().expect("Failed to read configuration.");
+
+    let connection_pool = PgPool::connect(&configuration.database.connection_string())
+        .await
+        .expect("Failed to connect to Postgres");
+
+    let address = format!("127.0.0.1:{}", configuration.application_port);
+    let listener = TcpListener::bind(address)?;
+
+    run(listener, connection_pool)?.await
 }
