@@ -3,8 +3,40 @@ name = "api"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
 actix-web = "4.0"
 actix-http = "3.0"
+serde = { version = "1", features = ["derive"] }
+config = "0.12.0"
+uuid = { version = "0.8", features = ["v4"] }
+chrono = "0.4"
+
+[dependencies.sqlx]
+version = "0.5"
+default-features = false
+features = [
+    # sqlxがfutureにactixランタイムを使用し、TLSバックエンドにrustlsを使用するよう指示
+    "runtime-actix-rustls",
+    # sqlx::query!/sqlx::query_as!へのアクセスを提供
+    "macros",
+    # postgres固有の機能のロックを解除
+    "postgres",
+    # SQL_UUIDをuuidクレートからUuid型にマッピングするためのサポートを追加
+    "uuid",
+    # SQL_timestamptzをDateTime<T>型にマッピングするためのサポートをchronoクレートに格納
+    "chrono",
+    # マイグレーションをコードから実行できるようにする
+    "migrate"
+]
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+path = "src/main.rs"
+name = "api"
+
+[dev-dependencies]
+actix-rt = "2.7.0"
+reqwest = "0.11.10"
+tokio = "1.17.0"
