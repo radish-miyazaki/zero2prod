@@ -10,8 +10,13 @@ serde = { version = "1", features = ["derive"] }
 config = "0.12.0"
 uuid = { version = "0.8", features = ["v4"] }
 chrono = "0.4"
-env_logger = "0.9.0"
+# 以下、構造化されたログを出力するためのクレート
 log = "0.4.14"
+tracing = { version = "0.1", features = ["log"] }
+tracing-futures = "0.2.5"
+tracing-subscriber = { version = "0.3", features = ["registry", "env-filter"] }
+tracing-bunyan-formatter = "0.3.2"
+tracing-log = "0.1.2"
 
 [dependencies.sqlx]
 version = "0.5"
