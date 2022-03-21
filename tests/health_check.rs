@@ -2,9 +2,27 @@
 // しかし、FWからIntegrationテストを切り出しておくことで、他のFWに乗り換えたときも
 // そのまま使うことができるので、わざわざtokioを用いてアプリケーションを背後で実行している。
 use api::configuration::{get_configuration, DatabaseSettings};
+use api::telemetry::{get_subscriber, init_subscriber};
+use once_cell::sync::Lazy;
 use sqlx::{Connection, Executor, PgConnection, PgPool};
 use std::net::TcpListener;
 use uuid::Uuid;
+
+// テスト開始時に一度だけ呼ばれる処理
+// テスト用の構造化ログを生成しておく
+static TRACING: Lazy<()> = Lazy::new(|| {
+    let default_filter_level = "info".to_string();
+    let subscriber_name = "test".to_string();
+
+    // テスト実行時にTEST_LOG=trueがセットされていれば、ログを出力する
+    if std::env::var("TEST_LOG").is_ok() {
+        let subscriber = get_subscriber(subscriber_name, default_filter_level, std::io::stdout);
+        init_subscriber(subscriber);
+    } else {
+        let subscriber = get_subscriber(subscriber_name, default_filter_level, std::io::sink);
+        init_subscriber(subscriber);
+    }
+});
 
 pub struct TestApp {
     pub address: String,
@@ -13,6 +31,8 @@ pub struct TestApp {
 
 // TODO: テスト終了時に、作成したDBインスタンスを削除する処理を追加
 async fn spawn_app() -> TestApp {
+    Lazy::force(&TRACING);
+
     // ポート番号が固定だと、番号によってはテストが落ちる可能性があるので、空いているポートを見つけて繋ぐようにする
     let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind random port");
     let port = listener.local_addr().unwrap().port();
