@@ -11,6 +11,7 @@ pub struct TestApp {
     pub db_pool: PgPool,
 }
 
+// TODO: テスト終了時に、作成したDBインスタンスを削除する処理を追加
 async fn spawn_app() -> TestApp {
     // ポート番号が固定だと、番号によってはテストが落ちる可能性があるので、空いているポートを見つけて繋ぐようにする
     let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind random port");
