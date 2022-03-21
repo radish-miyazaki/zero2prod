@@ -254,6 +254,7 @@ dependencies = [
  "sqlx",
  "tokio",
  "tracing",
+ "tracing-actix-web",
  "tracing-bunyan-formatter",
  "tracing-futures",
  "tracing-log",
@@ -2173,6 +2174,19 @@ dependencies = [
  "pin-project-lite",
  "tracing-attributes",
  "tracing-core",
+]
+
+[[package]]
+name = "tracing-actix-web"
+version = "0.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "99bcebac55fba44eadf75a424ee403e756f9165596a613d125876388e5fb4c34"
+dependencies = [
+ "actix-web",
+ "pin-project",
+ "tracing",
+ "tracing-futures",
+ "uuid",
 ]
 
 [[package]]
