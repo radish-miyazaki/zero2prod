@@ -1,3 +1,6 @@
+// TODO: デプロイに向けたDocker環境構築
+//  @ref: https://docs.digitalocean.com/products/app-platform/languages-frameworks/docker/
+
 use api::configuration::get_configuration;
 use api::startup::run;
 use api::telemetry::{get_subscriber, init_subscriber};
