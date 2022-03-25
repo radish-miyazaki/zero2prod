@@ -19,6 +19,7 @@ tracing-bunyan-formatter = "0.3.2"
 tracing-log = "0.1.2"
 tracing-actix-web = "0.5.1"
 unicode-segmentation = "1.9.0"
+validator = "0.14.0"
 
 [dependencies.sqlx]
 version = "0.5"

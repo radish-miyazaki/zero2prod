@@ -1,6 +1,6 @@
 // INFO: Skip: 5.4 Deploy To DigitalOcean Apps Platform
 
-// NEXT: 6.1 Requirements
+// NEXT: 6.10 Handling A Result
 use api::configuration::get_configuration;
 use api::startup::run;
 use api::telemetry::{get_subscriber, init_subscriber};
