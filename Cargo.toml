@@ -13,7 +13,6 @@ chrono = "0.4"
 # 以下、構造化されたログを出力するためのクレート
 log = "0.4.14"
 tracing = { version = "0.1", features = ["log"] }
-tracing-futures = "0.2.5"
 tracing-subscriber = { version = "0.3", features = ["registry", "env-filter"] }
 tracing-bunyan-formatter = "0.3.2"
 tracing-log = "0.1.2"
@@ -54,3 +53,4 @@ claim = "0.5.0"
 once_cell = "1.10.0"
 reqwest = "0.11.10"
 tokio = "1.17.0"
+fake = "~2.3"
