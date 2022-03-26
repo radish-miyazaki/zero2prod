@@ -26,6 +26,18 @@ pub struct TestApp {
     pub db_pool: PgPool,
 }
 
+impl TestApp {
+    pub async fn post_subscriptions(&self, body: String) -> reqwest::Response {
+        reqwest::Client::new()
+            .post(&format!("{}/subscriptions", &self.address))
+            .header("Content-Type", "application/x-www-form-urlencoded")
+            .body(body)
+            .send()
+            .await
+            .expect("Failed to execute request")
+    }
+}
+
 // INFO: actix_webのテスト用のHelper関数を使えばより簡単に実装できる。
 // しかし、FWからIntegrationテストを切り出しておくことで、他のFWに乗り換えたときも
 // そのまま使うことができるので、わざわざtokioを用いてアプリケーションを背後で実行している。
