@@ -2,6 +2,7 @@
 // しかし、FWからIntegrationテストを切り出しておくことで、他のFWに乗り換えたときも
 // そのまま使うことができるので、わざわざtokioを用いてアプリケーションを背後で実行している。
 use api::configuration::{get_configuration, DatabaseSettings};
+use api::email_client::EmailClient;
 use api::telemetry::{get_subscriber, init_subscriber};
 use once_cell::sync::Lazy;
 use sqlx::{Connection, Executor, PgConnection, PgPool};
@@ -41,10 +42,25 @@ async fn spawn_app() -> TestApp {
     // テストでは、本処理のデータベース名とは異なるランダムな名前のデータベースで処理を行う
     let mut configuration = get_configuration().expect("Failed to read configuration");
     configuration.database.database_name = Uuid::new_v4().to_string();
+
     let connection_pool = configure_database(&configuration.database).await;
 
-    let server =
-        api::startup::run(listener, connection_pool.clone()).expect("Failed to bind address");
+    let sender_email = configuration
+        .email_client
+        .sender()
+        .expect("Invalid sender email address.");
+
+    let timeout = configuration.email_client.timeout();
+
+    let email_client = EmailClient::new(
+        configuration.email_client.base_url,
+        sender_email,
+        configuration.email_client.api_key,
+        timeout,
+    );
+
+    let server = api::startup::run(listener, connection_pool.clone(), email_client)
+        .expect("Failed to bind address");
 
     // テスト終了時にサーバが落ちるようにする
     let _ = tokio::spawn(server);
