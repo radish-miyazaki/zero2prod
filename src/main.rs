@@ -1,6 +1,7 @@
 // INFO: Skip: 5.4 Deploy To DigitalOcean Apps Platform
 
-// NEXT: 7.5 Database Migrations
+// NEXT: 7.6.5.2 Green Test
+
 use api::configuration::get_configuration;
 use api::startup::Application;
 use api::telemetry::{get_subscriber, init_subscriber};
