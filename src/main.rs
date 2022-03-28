@@ -1,6 +1,6 @@
 // INFO: Skip: 5.4 Deploy To DigitalOcean Apps Platform
 
-// NEXT: 7.2.5.0.2 Body
+// NEXT: 7.5 Database Migrations
 use api::configuration::get_configuration;
 use api::startup::Application;
 use api::telemetry::{get_subscriber, init_subscriber};
