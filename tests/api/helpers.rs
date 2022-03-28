@@ -47,6 +47,7 @@ impl TestApp {
 pub async fn spawn_app() -> TestApp {
     Lazy::force(&TRACING);
 
+    // メールテスト用のモックサーバを起動
     let email_server = MockServer::start().await;
 
     let configuration = {
@@ -54,7 +55,7 @@ pub async fn spawn_app() -> TestApp {
         // テストでは、本処理のデータベース名とは異なるランダムな名前のデータベースで処理を行う
         c.database.database_name = Uuid::new_v4().to_string();
         c.application.port = 0;
-        c.email_client.api_key = email_server.uri();
+        c.email_client.base_url = email_server.uri();
         c
     };
 
