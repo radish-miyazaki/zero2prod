@@ -1,6 +1,6 @@
 // INFO: Skip: 5.4 Deploy To DigitalOcean Apps Platform
 
-// NEXT: 7.6.5.2 Green Test
+// NEXT: 7.7 Database Transactions
 
 use api::configuration::get_configuration;
 use api::startup::Application;
