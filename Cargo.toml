@@ -22,6 +22,7 @@ unicode-segmentation = "1.9.0"
 validator = "0.14.0"
 reqwest = { version = "0.11.10", default-features = false, features = ["json", "rustls-tls"]  }
 wiremock = "0.5"
+rand = { version = "0.8", features = ["std_rng"]}
 
 [dependencies.sqlx]
 version = "0.5"
