@@ -79,7 +79,7 @@ async fn subscribe_returns_a_400_when_data_is_missing() {
 }
 
 #[actix_rt::test]
-async fn subscribe_sends_a_confirmation_email_for_valid_data() {
+async fn subscribe_sends_a_confirmation_email_with_a_link() {
     let app = spawn_app().await;
     let body = "name=le%20guin&email=ursula_le_guin%40gmail.com";
 
